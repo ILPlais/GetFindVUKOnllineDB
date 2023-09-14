@@ -2,6 +2,7 @@
 
 # Set the target directory
 if [ "$(id -u)" -ne 0 ]
+then
 	# The user is not root: use the local directory
 	target="$HOME/.config/aacs"
 else
