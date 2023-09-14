@@ -1,4 +1,4 @@
-# Set the target directory
+﻿# Set the target directory
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	# The user is not an administrator: use the local directory
 	$target = "$env:APPDATA\aacs"
@@ -11,7 +11,7 @@ else {
 # If the target directory is missing, create it
 if (-not (Test-Path -Path $target -PathType Container)) {
 	Write-Host "Directory ""$target"" is missing!"
-	Write-Host "Creating ""$target""�"
+	Write-Host "Creating ""$target""…"
 	$null = New-Item -Path $target -ItemType Directory -ErrorAction Stop
 }
 else {
@@ -29,10 +29,11 @@ New-Item -Type Directory -Path $tempdir | Out-Null
 # For each link
 foreach ($link in $links) {
 	# Download the zip file
-	Write-Host "Downloading the ""$link"" file�"
+	Write-Host "Downloading the file: ""$link""…"
 	Invoke-WebRequest -UseBasicParsing -Uri $link -OutFile "$tempdir\keydb.zip"
 
 	# Unzip the file
+	Write-Host "Unzip the file: ""$tempdir\keydb.zip""…"
 	Expand-Archive -Path "$tempdir\keydb.zip" -DestinationPath $tempdir
 
 	# Add the contents of the keydb.cfg file to the KEYDB.cfg
