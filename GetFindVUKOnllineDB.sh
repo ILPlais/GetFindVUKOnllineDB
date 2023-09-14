@@ -1,13 +1,19 @@
 #!/bin/bash
 
 # Set the target directory
-target="$HOME/.config/aacs"
+if [ "$(id -u)" -ne 0 ]
+	# The user is not root: use the local directory
+	target="$HOME/.config/aacs"
+else
+	# The user is root: use the global directory
+	target="/etc/xdg/aacs"
+fi
 
 # If the target directory is missing, create it
 if ! [ -d "$target" ]
 then
-	echo -e "\nDirectory \"${target}\" is missing!"
-	echo "Creating \"${target}\"..."
+	echo "Directory \"${target}\" is missing!"
+	echo "Creating \"${target}\"…"
 	mkdir -p "$target" || exit 1
 else
 	# Delete the existing KEYDB.cfg file
@@ -22,17 +28,17 @@ tempdir=$(mktemp -d)
 
 # For each link
 for link in $links; do
-  # Download the zip file
-  wget --output-document=$tempdir/keydb.zip $link
+	# Download the zip file
+	wget --output-document=$tempdir/keydb.zip $link
 
-  # Unzip the file
-  unzip $tempdir/keydb.zip -d $tempdir/
+	# Unzip the file
+	unzip $tempdir/keydb.zip -d $tempdir/
 
-  # Add the contents of the keydb.cfg file to the KEYDB.cfg
-  cat $tempdir/keydb.cfg >> $HOME/.config/aacs/KEYDB.cfg
+	# Add the contents of the keydb.cfg file to the KEYDB.cfg
+	cat $tempdir/keydb.cfg >> $HOME/.config/aacs/KEYDB.cfg
 
-  # Remove the downloaded and extracted files
-  rm -f $tempdir/*
+	# Remove the downloaded and extracted files
+	rm -f $tempdir/*
 done
 
 # Remove the temporary directory
