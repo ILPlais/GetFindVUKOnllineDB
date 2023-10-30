@@ -19,10 +19,10 @@ else {
 			Write-Host "[!] Library AACS is missing!"
 			# Check if Windows is in 32 bits or in 64 bits
 			if ([Environment]::Is64BitOperatingSystem) {
-				Write-Host "[+] Downloading the 32 bits version…"
+				Write-Host "[+] Downloading the 64 bits version…"
 				$libaacsUrl = "https://vlc-bluray.whoknowsmy.name/files/win64/libaacs.dll"
 			} else {
-				Write-Host "[+] Downloading the 64 bits version…"
+				Write-Host "[+] Downloading the 32 bits version…"
 				$libaacsUrl = "https://vlc-bluray.whoknowsmy.name/files/win32/libaacs.dll"
 			}
 
